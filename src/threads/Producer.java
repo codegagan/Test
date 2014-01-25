@@ -10,17 +10,18 @@ import java.util.Queue;
  * To change this template use File | Settings | File Templates.
  */
 public class Producer implements Runnable {
-    Queue queue=null;
-    int i=0;
-    public Producer(Queue q){
-        queue=q;
+    private Queue queue = null;
+    int i = 0;
+
+    public Producer(Queue q) {
+        queue = q;
     }
 
-    public void run(){
-        while(true){
-            String item=getNextItem();
-            System.out.println("Producing Item: "+item);
-            synchronized (queue){
+    public void run() {
+        while (true) {
+            String item = getNextItem();
+            System.out.println("Producing Item: " + item);
+            synchronized (queue) {
                 queue.offer(item);
                 queue.notify();
             }
@@ -30,12 +31,12 @@ public class Producer implements Runnable {
 
     private String getNextItem() {
         i++;
-        try{
-        Thread.sleep(1000);
-        }catch (Exception e){
+        try {
+            //Thread.sleep(1000);
+        } catch (Exception e) {
             System.out.println("Thread sleep Exception while producing Item: " + i);
         }
-        return "Item"+i;
+        return "Item" + i;
     }
 
 }
