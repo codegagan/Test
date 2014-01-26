@@ -13,15 +13,15 @@ import java.util.Queue;
  * To change this template use File | Settings | File Templates.
  */
 public class Initiate {
-    public static void main(String ... args)throws Exception{
-        Queue q= new PriorityQueue();
-        Thread producer=new Thread(new Producer(q));
-        Thread consumer=new Thread(new Consumer(q));
+    public static void main(String... args) throws Exception {
+        Queue q = new PriorityQueue();
+        Thread producer = new Thread(new Producer(q, 5000));
+        Thread consumer = new Thread(new Consumer(q));
         System.out.println("Starting Process");
         Thread.sleep(1000);
 
         consumer.start();
-       System.out.println("Consumer Started");
+        System.out.println("Consumer Started");
         Thread.sleep(700);
         producer.start();
         System.out.println("Producer Started");

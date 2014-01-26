@@ -10,11 +10,13 @@ import java.util.Queue;
  * To change this template use File | Settings | File Templates.
  */
 public class Producer implements Runnable {
-    private Queue queue = null;
+    final private Queue queue;
     int i = 0;
+    final int limit;
 
-    public Producer(Queue q) {
+    public Producer(Queue q, int maxSize) {
         queue = q;
+        limit = maxSize;
     }
 
     public void run() {
@@ -22,6 +24,15 @@ public class Producer implements Runnable {
             String item = getNextItem();
             System.out.println("Producing Item: " + item);
             synchronized (queue) {
+                if (i >= limit) {
+                    System.out.println("Limit Reached for Producer, Going to wait for item to be consumed");
+                    i = 0;
+                    try {
+                        queue.wait();
+                    } catch (Exception e) {
+                        System.out.println("Wait Exception in Producer");
+                    }
+                }
                 queue.offer(item);
                 queue.notify();
             }
@@ -32,7 +43,7 @@ public class Producer implements Runnable {
     private String getNextItem() {
         i++;
         try {
-            //Thread.sleep(1000);
+            //Thread.sleep(100);
         } catch (Exception e) {
             System.out.println("Thread sleep Exception while producing Item: " + i);
         }

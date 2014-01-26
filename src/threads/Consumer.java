@@ -10,10 +10,11 @@ import java.util.Queue;
  * To change this template use File | Settings | File Templates.
  */
 public class Consumer implements Runnable {
-    private Queue queue = null;
+    final private Queue queue;
 
     public Consumer(Queue q) {
         queue = q;
+
     }
 
     public void run() {
@@ -29,6 +30,7 @@ public class Consumer implements Runnable {
                     }
                 }
                 item = (String) queue.poll();
+                queue.notify();
             }
             consumeItem(item);
             Thread.yield();
